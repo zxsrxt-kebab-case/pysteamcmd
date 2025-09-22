@@ -78,10 +78,7 @@ class Steamcmd(object):
         return None
 
     def _create_str_io(self, text):
-        with io.StringIO(text) as f:
-            vd = vdf.parse(f)
-
-        return vd
+        return io.StringIO(text)
 
     def install(self, force=False):
         """
@@ -219,7 +216,8 @@ class Steamcmd(object):
         print("Match:", match)
         if match:
             full_text = match.string[match.start():match.end()]
-            return self._parse_vdf(vdf_data=self._create_str_io(full_text))
+            vdf_io = self._create_str_io(full_text)
+            return self._parse_vdf(vdf_data=vdf_io)
 
         return {"error": "not found"}
 
