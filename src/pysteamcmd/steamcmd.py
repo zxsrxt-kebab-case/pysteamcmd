@@ -204,7 +204,6 @@ class Steamcmd(object):
             '+app_info_print {}'.format(gameid),
             '+quit',
         )
-        print(steamcmd_params)
 
         try:
             output = subprocess.check_output(steamcmd_params, stderr=subprocess.STDOUT, text=True)
@@ -214,7 +213,6 @@ class Steamcmd(object):
         pattern = r'"\d*"\s*\{.*}'
         match = re.search(pattern, output, re.DOTALL)
 
-        print("Match:", match)
         if match:
             full_text = match.string[match.start():match.end()]
             vdf_io = self._create_str_io(full_text)
