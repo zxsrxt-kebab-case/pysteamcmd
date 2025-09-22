@@ -202,15 +202,12 @@ class Steamcmd(object):
         )
 
         try:
-            output_b = subprocess.check_output(steamcmd_params, stderr=subprocess.DEVNULL)
-            output = output_b.decode('utf-8', 'ignore')
+            output = subprocess.check_output(steamcmd_params, stderr=subprocess.DEVNULL, text=True)
         except subprocess.CalledProcessError:
             raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
 
-        cleaned_output = re.sub(r'\x1b\[[0-9;]*m', '', output)
-
         pattern = r'"^\d+"\s\{[^}]*+(?:}[^}]*+)*+}$'
-        match = re.search(pattern, cleaned_output, re.DOTALL)
+        match = re.search(pattern, output, re.DOTALL)
 
         print("Match:", match)
         if match:
