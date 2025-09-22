@@ -220,3 +220,30 @@ class Steamcmd(object):
 
         return {"error": "not found"}
 
+    def download_files(self, gameid, depot_id, manifest_gid, user='anonymous', password='', guard_code = '', path = '', file_filter = '', target_os = ''):
+        """Downloads game files
+        :param gameid: steam game id
+        :param depot_id: steam game depot id
+        :param manifest_gid: steam game manifest gid
+        :param user: steam username (defaults anonymous)
+        :param password: steam password (defaults None)
+        :param guard_code: steam guard code (defaults None)
+        :param file_filter: filters file for download
+        :param target_os: target os for download
+        :param path: path to download to
+        :return: status
+        """
+
+        steamcmd_params = (
+            self.steamcmd_exe,
+            '+login {} {} {}'.format(user, password, guard_code),
+            '+@sSteamCmdForcePlatformType {}'.format(target_os),
+            '+@sDepotDownloadFileFilter {}'.format(file_filter),
+            '+download_depot {} {} {} {}'.format(gameid, depot_id, manifest_gid, path),
+            '+quit',
+        )
+
+        try:
+            return subprocess.check_call(steamcmd_params)
+        except subprocess.CalledProcessError:
+            raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
