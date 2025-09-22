@@ -239,7 +239,7 @@ class Steamcmd(object):
             '+login {} {} {}'.format(user, password, guard_code),
             '+@sSteamCmdForcePlatformType {}'.format(target_os),
             '+@sDepotDownloadFileFilter {}'.format(file_filter),
-            '+download_depot {} {} {} {}'.format(gameid, depot_id, manifest_gid, path),
+            '+download_depot {} {} {} _ {}'.format(gameid, depot_id, manifest_gid, path),
             '+quit',
         )
 
