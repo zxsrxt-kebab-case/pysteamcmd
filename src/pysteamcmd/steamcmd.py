@@ -208,7 +208,7 @@ class Steamcmd(object):
 
         pattern = r'"{game}"\s*\{{(.*)}}\s*$'.format(game=gameid)
         match = re.search(pattern, output, re.DOTALL)
-
+        print(match)
         if match:
             text = match.group(0)
             print(text)
