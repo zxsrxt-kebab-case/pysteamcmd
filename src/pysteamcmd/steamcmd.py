@@ -213,15 +213,12 @@ class Steamcmd(object):
         except subprocess.CalledProcessError:
             raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
 
-        print(output)
-
-        pattern = r'"252490"\s*\{.*}'
+        pattern = r'"\d*"\s*\{.*}'
         match = re.search(pattern, output, re.DOTALL)
 
         print("Match:", match)
         if match:
             full_text = match.string[match.start():match.end()]
-            print("Found text length:", len(full_text))
             return self._parse_vdf(vdf_data=self._create_str_io(full_text))
 
         return {"error": "not found"}
