@@ -206,13 +206,16 @@ class Steamcmd(object):
         except subprocess.CalledProcessError:
             raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
 
-        pattern = r'"\d+"\s*\{{(.*)}}\s*$'
-        match = re.search(pattern, output, re.DOTALL)
-        print(match)
-        if match:
-            text = match.group(0)
-            print(text)
-            return self._parse_vdf(vdf_data=text)
+        cleaned_output = re.sub(r'\x1b\[[0-9;]*m', '', output)
 
-        return {"not found": 0}
+        pattern = r'"{}"\s*\{{(.*?)}}\s*$'.format(re.escape(gameid))
+        match = re.search(pattern, cleaned_output, re.DOTALL)
+
+        print("Match:", match)
+        if match:
+            full_text = '"{}" {{{}}}'.format(gameid, match.group(1))
+            print("Found text length:", len(full_text))
+            return self._parse_vdf(vdf_data=full_text)
+
+        return {"error": "not found"}
 
