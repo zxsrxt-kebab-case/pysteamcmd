@@ -211,8 +211,7 @@ class Steamcmd(object):
 
         if match:
             text = match.group(0)
-            vdf_text = self._parse_vdf(text)
-            return vdf_text
+            return self._parse_vdf(vdf_data=text)
 
         return {}
 
