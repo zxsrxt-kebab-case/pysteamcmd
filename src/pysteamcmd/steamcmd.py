@@ -209,7 +209,7 @@ class Steamcmd(object):
 
         print(output)
 
-        pattern = r'"252490"\s*\{[^{}]*+(?:\{[^{}]*+\}[^{}]*+)*+}'
+        pattern = r'"252490"\s*\{.*}'
         match = re.search(pattern, output, re.DOTALL)
 
         print("Match:", match)
