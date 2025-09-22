@@ -197,7 +197,7 @@ class Steamcmd(object):
         steamcmd_params = (
             self.steamcmd_exe,
             '+login {} {}'.format(user, password),
-            'app_info_print {}'.format(gameid),
+            '+app_info_print {}'.format(gameid),
             '+quit',
         )
         print(steamcmd_params)
