@@ -206,7 +206,7 @@ class Steamcmd(object):
         except subprocess.CalledProcessError:
             raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
 
-        pattern = r'"{game}"\s*\{{(.*)}}\s*$'.format(game=gameid)
+        pattern = r'"\d+"\s*\{{(.*)}}\s*$'
         match = re.search(pattern, output, re.DOTALL)
         print(match)
         if match:
@@ -214,5 +214,5 @@ class Steamcmd(object):
             print(text)
             return self._parse_vdf(vdf_data=text)
 
-        return {}
+        return {"not found": 0}
 
