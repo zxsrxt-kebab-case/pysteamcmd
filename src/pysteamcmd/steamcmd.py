@@ -77,6 +77,12 @@ class Steamcmd(object):
             return vdf.parse(vdf_data)
         return None
 
+    def _create_str_io(self, text):
+        with io.StringIO(text) as f:
+            vd = vdf.parse(f)
+
+        return vd
+
     def install(self, force=False):
         """
         Installs steamcmd if it is not already installed to self.install_path.
@@ -216,7 +222,7 @@ class Steamcmd(object):
         if match:
             full_text = match.string[match.start():match.end()]
             print("Found text length:", len(full_text))
-            return self._parse_vdf(vdf_data=full_text)
+            return self._parse_vdf(vdf_data=self._create_str_io(full_text))
 
         return {"error": "not found"}
 
