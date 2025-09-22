@@ -209,7 +209,7 @@ class Steamcmd(object):
 
         cleaned_output = re.sub(r'\x1b\[[0-9;]*m', '', output)
 
-        pattern = r'"{}"\s*\{{(.*?)}}\s*$'.format(re.escape(str(gameid)))
+        pattern = r'"^\d+"\s\{[^}]*+(?:}[^}]*+)*+}$'
         match = re.search(pattern, cleaned_output, re.DOTALL)
 
         print("Match:", match)
