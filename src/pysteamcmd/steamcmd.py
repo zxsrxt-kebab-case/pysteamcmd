@@ -206,7 +206,7 @@ class Steamcmd(object):
         except subprocess.CalledProcessError:
             raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
 
-        pattern = r'"^\d+"\s\{[^}]*+(?:}[^}]*+)*+}$'
+        pattern = r'"252490"\s*\{[^{}]*+(?:\{[^{}]*+\}[^{}]*+)*+}'
         match = re.search(pattern, output, re.DOTALL)
 
         print("Match:", match)
