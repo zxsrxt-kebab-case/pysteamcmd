@@ -202,7 +202,8 @@ class Steamcmd(object):
         )
 
         try:
-            output = subprocess.check_output(steamcmd_params, stderr=subprocess.DEVNULL, text=True)
+            output_b = subprocess.check_output(steamcmd_params, stderr=subprocess.DEVNULL)
+            output = output_b.decode('utf-8', 'ignore')
         except subprocess.CalledProcessError:
             raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
 
