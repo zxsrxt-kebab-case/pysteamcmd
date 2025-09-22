@@ -189,17 +189,18 @@ class Steamcmd(object):
         except subprocess.CalledProcessError:
             raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
 
-    def get_app_info(self, gameid, user='anonymous', password='') -> dict:
+    def get_app_info(self, gameid, user='anonymous', password='', guard_code = '') -> dict:
         """Getting game info from steam(depots, manifests, ...)
         :param gameid: steam game id
         :param user: steam username (defaults anonymous)
         :param password: steam password (defaults None)
+        :param guard_code: steam guard code (defaults None)
         :return: dict with game info
         """
 
         steamcmd_params = (
             self.steamcmd_exe,
-            '+login {} {}'.format(user, password),
+            '+login {} {} {}'.format(user, password, guard_code),
             '+app_info_print {}'.format(gameid),
             '+quit',
         )
