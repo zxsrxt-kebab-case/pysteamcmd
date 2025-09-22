@@ -1,5 +1,7 @@
+import re
 import sys
 import os
+import io
 import platform
 import zipfile
 import tarfile
@@ -183,3 +185,34 @@ class Steamcmd(object):
             return subprocess.check_call(steamcmd_params)
         except subprocess.CalledProcessError:
             raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
+
+    def get_app_info(self, gameid, user='anonymous', password=None) -> dict:
+        """Getting game info from steam(depots, manifests, ...)
+        :param gameid: steam game id
+        :param user: steam username (defaults anonymous)
+        :param password: steam password (defaults None)
+        :return: dict with game info
+        """
+
+        steamcmd_params = (
+            self.steamcmd_exe,
+            '+login {} {}'.format(user, password),
+            'app_info_print {}'.format(gameid),
+            '+quit',
+        )
+
+        try:
+            output = subprocess.check_output(steamcmd_params, stderr=subprocess.DEVNULL, text=True)
+        except subprocess.CalledProcessError:
+            raise SteamcmdException("Steamcmd was unable to run. Did you install your 32-bit libraries?")
+
+        pattern = r'"{game}"\s*\{{(.*)}}\s*$'.format(game=gameid)
+        match = re.search(pattern, output, re.DOTALL)
+
+        if match:
+            text = match.group(0)
+            vdf_text = self._parse_vdf(text)
+            return vdf_text
+
+        return {}
+
