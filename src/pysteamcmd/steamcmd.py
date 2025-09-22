@@ -214,7 +214,7 @@ class Steamcmd(object):
 
         print("Match:", match)
         if match:
-            full_text = '"{}" {{{}}}'.format(gameid, match.group(1))
+            full_text = match.group(0)
             print("Found text length:", len(full_text))
             return self._parse_vdf(vdf_data=full_text)
 
